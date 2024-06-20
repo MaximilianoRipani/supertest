@@ -1,0 +1,93 @@
+paths:
+  /api/adoptions:
+    get:
+      summary: Obtener todas las adopciones
+      tags:
+        - Adoptions
+      responses:
+        '200':
+          description: Adopciones obtenidas correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Adoption'
+        '500':
+          description: Error al obtener adopciones
+
+  /api/adoptions/{aid}:
+    get:
+      summary: Obtener una adopción específica
+      tags:
+        - Adoptions
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la adopción a buscar
+      responses:
+        '200':
+          description: Adopción obtenida correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Adoption'
+        '404':
+          description: Adopción no encontrada
+        '500':
+          description: Error al obtener adopción
+
+  /api/adoptions/{uid}/{pid}:
+    post:
+      summary: Crear una nueva adopción
+      tags:
+        - Adoptions
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del usuario adoptante
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la mascota adoptada
+      responses:
+        '201':
+          description: Adopción creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Adoption'
+        '500':
+          description: Error al crear adopción
+
+components:
+  schemas:
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB
+        userId:
+          type: string
+          description: ID del usuario adoptante
+        petId:
+          type: string
+          description: ID de la mascota adoptada
+        date:
+          type: string
+          format: date-time
+          description: Fecha de la adopción
+      example:
+        _id: "1321ewew22"
+        userId: "609d4463b6a14100617a3b28"
+        petId: "609d4463b6a14100617a3b29"
+        date: "2024-06-12T12:00:00.000Z"
